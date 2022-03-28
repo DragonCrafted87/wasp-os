@@ -87,13 +87,31 @@ class AlarmApp:
         self.pending_alarms = array.array('d', [0.0, 0.0, 0.0, 0.0])
 
         # Set a nice default
-        self.num_alarms = 1
-        for alarm in self.alarms:
-            alarm[_HOUR_IDX] = 8
-            alarm[_MIN_IDX] = 0
-            alarm[_ENABLED_IDX] = 0
-        self.alarms[0][_ENABLED_IDX] = _WEEKDAYS
+        self.num_alarms = 4
+#        for alarm in self.alarms:
+#            alarm[_HOUR_IDX] = 8
+#            alarm[_MIN_IDX] = 0
+#            alarm[_ENABLED_IDX] = 0
 
+        self.alarms[0][_HOUR_IDX] = 6
+        self.alarms[0][_MIN_IDX] = 15
+        self.alarms[0][_ENABLED_IDX] = _EVERY_DAY
+        self.alarms[0][_ENABLED_IDX] |= _IS_ACTIVE
+
+        self.alarms[1][_HOUR_IDX] = 6
+        self.alarms[1][_MIN_IDX] = 45
+        self.alarms[1][_ENABLED_IDX] = _EVERY_DAY
+        self.alarms[1][_ENABLED_IDX] |= _IS_ACTIVE
+
+        self.alarms[2][_HOUR_IDX] = 12
+        self.alarms[2][_MIN_IDX] = 55
+        self.alarms[2][_ENABLED_IDX] = _WEEKDAYS
+        self.alarms[2][_ENABLED_IDX] |= _IS_ACTIVE
+
+        self.alarms[3][_HOUR_IDX] = 17
+        self.alarms[3][_MIN_IDX] = 55
+        self.alarms[3][_ENABLED_IDX] = 0xF
+        self.alarms[3][_ENABLED_IDX] |= _IS_ACTIVE
 
     def foreground(self):
         """Activate the application."""
@@ -146,11 +164,11 @@ class AlarmApp:
             wasp.system.bar.update()
 
     def press(self, button, state):
-        """"Notify the application of a button press event."""
+        """Notify the application of a button press event."""
         wasp.system.navigate(wasp.EventType.HOME)
 
     def swipe(self, event):
-        """"Notify the application of a swipe event."""
+        """Notify the application of a swipe event."""
         if self.page == _RINGING_PAGE:
             self._snooze()
         elif self.page > _HOME_PAGE:
